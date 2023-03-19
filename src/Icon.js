@@ -3,6 +3,6 @@ export function getIconNode(path, name, onClick) {
     $icon.className = "icon";
     $icon.src = path;
     $icon.alt = name;
-    onClick && $icon.addEventListener("click", onClick);
+    if (onClick) $icon.addEventListener("click", onClick);
     return $icon;
 }

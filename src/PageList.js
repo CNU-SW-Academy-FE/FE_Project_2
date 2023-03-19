@@ -12,10 +12,10 @@ function addDocument(
     const $ul = document.createElement("ul");
     for (const { id, title, documents } of pageList) {
         const $li = document.createElement("li");
+        $li.style.marginLeft = `${indent * 10}px`;
         const $tmp = document.createElement("div");
         $tmp.className = "pageItem";
         $tmp.dataset.id = id;
-        $tmp.style.marginLeft = `${20 * indent}px`;
         $tmp.appendChild(getIconNode("../icons/note.svg", "note"));
         const $text = document.createElement("div");
         $text.className = "pageItemText";
@@ -30,6 +30,19 @@ function addDocument(
         );
         $li.appendChild($tmp);
         $ul.appendChild($li);
+        if (documents.length) {
+            const $nestedList = document.createElement("li");
+            $nestedList.style.listStyleType = "none";
+            addDocument(
+                $nestedList,
+                documents,
+                indent + 1,
+                onRead,
+                onCreate,
+                onDelete
+            );
+            $ul.appendChild($nestedList);
+        }
     }
     $parentNode.appendChild($ul);
 }
@@ -44,7 +57,6 @@ function PageList({
     this.state = [];
     this.setState = (nextState) => {
         this.state = nextState;
-        console.log(this.state);
         this.render();
     };
     this.render = (initial = false) => {
@@ -57,6 +69,7 @@ function PageList({
             addDocument(
                 $article,
                 this.state,
+                0,
                 onTitleClick,
                 onItemPlusClick,
                 onItemDeleteClick
@@ -75,6 +88,7 @@ function PageList({
             addDocument(
                 $new,
                 this.state,
+                0,
                 onTitleClick,
                 onItemPlusClick,
                 onItemDeleteClick
