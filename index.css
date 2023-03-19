@@ -6,7 +6,7 @@
 
 .app {
     display: grid;
-    grid-template-columns: 300px 1fr;
+    grid-template-columns: minmax(300px, auto) 1fr;
 }
 
 .pageList {
@@ -40,6 +40,37 @@
     cursor: pointer;
 }
 
+ul {
+    list-style-type: circle;
+    margin-left: 20px;
+}
+
+.pageItem {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.pageItemText {
+    display: inline-block;
+    padding: 5px;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.icon {
+    --size: 12px;
+    display: inline-block;
+    width: var(--size);
+    height: var(--size);
+    vertical-align: middle;
+    padding: 5px;
+}
+
+.icon:not(:first-of-type):hover, .pageItemText:hover {
+    border-radius: 7px;
+    background-color: #55595E;
+    cursor: pointer;
+}
 
 .editor {
     color: white;
