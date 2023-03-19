@@ -1,0 +1,51 @@
+* {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+
+.app {
+    display: grid;
+    grid-template-columns: 300px 1fr;
+}
+
+.pageList {
+    background-color: #23292b;
+    color: white;
+    padding: 30px 0;
+}
+
+.pageList > * {
+    height: fit-content;
+}
+
+.pageList > header {
+    font-size: 24px;
+    margin: 0 0 20px 0;
+    padding: 0 0 0 20px;
+}
+
+.pageList > article {
+    padding: 0 0 0 20px;
+}
+
+.pageList > footer {
+    font-size: 18px;
+    margin: 20px 0 0 0;
+    padding: 5px 0 5px 20px;
+}
+
+.pageList > footer:hover {
+    background-color: #3c3f42;
+    cursor: pointer;
+}
+
+
+.editor {
+    color: white;
+    background-color: #191919;
+}
+
+.editor > * {
+    height: fit-content;
+}
