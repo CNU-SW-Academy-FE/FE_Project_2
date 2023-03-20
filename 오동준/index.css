@@ -1,0 +1,144 @@
+* {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+
+.app {
+    display: grid;
+    grid-template-columns: minmax(300px, auto) 1fr;
+}
+
+.pageList {
+    background-color: #23292b;
+    color: white;
+    padding-top: 30px;
+    padding-bottom: 10px;
+}
+
+.pageList > * {
+    height: fit-content;
+}
+
+.pageList > header {
+    display: inline-block;
+    font-size: 24px;
+    margin: 0 0 20px 20px;
+    padding: 3px;
+}
+
+.pageList > header:hover {
+    border-radius: 7px;
+    background-color: #55595e;
+    cursor: pointer;
+}
+
+.pageList > article {
+    padding: 0 0 0 20px;
+}
+
+.pageList > footer {
+    font-size: 18px;
+    margin: 20px 0 0 0;
+    padding: 5px 0 5px 20px;
+}
+
+.pageList > footer:hover {
+    background-color: #3c3f42;
+    cursor: pointer;
+}
+
+ul {
+    list-style-type: circle;
+    margin-left: 20px;
+}
+
+.pageItem {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.pageItemText {
+    display: inline-block;
+    padding: 5px;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.icon {
+    --size: 12px;
+    display: inline-block;
+    width: var(--size);
+    height: var(--size);
+    vertical-align: middle;
+    padding: 5px;
+}
+
+.icon:not(:first-of-type):hover,
+.pageItemText:hover {
+    border-radius: 7px;
+    background-color: #55595e;
+    cursor: pointer;
+}
+
+.editor {
+    color: white;
+    background-color: black;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
+    padding: 20px 0;
+    width: 100%;
+}
+
+.editor > *:focus {
+    outline: none;
+}
+
+.editor .save {
+    --fontSize: 38px;
+    height: var(--fontSize);
+    width: 70%;
+    text-align: end;
+    font-size: var(--fontSize);
+    color: lightgray;
+}
+
+.editor > header {
+    height: 55px;
+    width: 70%;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 48px;
+    font-weight: 400;
+    border-radius: 15px;
+    padding: 5px;
+    overflow: hidden;
+}
+
+.editor > article {
+    min-height: 400px;
+    height: fit-content;
+    width: 70%;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 30px;
+    overflow-wrap: break-word;
+    border-radius: 15px;
+    padding: 5px;
+    overflow: hidden;
+}
+
+.editor > footer {
+    height: fit-content;
+    width: 70%;
+    padding: 5px;
+    border-radius: 10px;
+}
+
+.editor > footer:hover {
+    background-color: #55595e;
+    cursor: pointer;
+}
