@@ -22,21 +22,25 @@ function App({ $target }) {
             });
 
             if (!newDocument) return;
+            newDocument.documents = [];
             this.setState({
                 ...this.state,
-                pageList: [...this.state.pageList, newDocument],
+                pageList: this.state.pageList.concat(newDocument),
             });
+            history.pushState(null, null, `/documents/${newDocument.id}`);
+            await this.route();
         },
         onTitleClick: async (id) => {
             const data = await request(`/${id}`);
             history.pushState(null, null, `/documents/${id}`);
-            const { title, content } = data;
+            const { title, content, documents } = data;
             this.setState({
                 ...this.state,
                 curDoc: {
                     id,
                     title,
                     content,
+                    subDoc: documents.length ? documents[0] : null,
                 },
             });
         },
@@ -52,9 +56,12 @@ function App({ $target }) {
             });
             if (!newDocument) return;
             newDocument.documents = [];
-            await fetchPageList();
+            this.setState({
+                ...this.state,
+                pageList: this.state.pageList.concat(newDocument),
+            });
             history.pushState(null, null, `/documents/${newDocument.id}`);
-            this.route();
+            await this.route();
         },
         onItemDeleteClick: async (documents) => {
             const answer = confirm(
@@ -76,7 +83,17 @@ function App({ $target }) {
 
     const $editor = new Editor({
         $target,
-        onChange: debounce(async (e) => {}, 3000),
+        onChange: debounce(async ({ id, title, content, save }) => {
+            save.innerHTML = "Saving...";
+            await request(`/${id}`, "PUT", { title, content });
+            await this.route();
+            save.innerHTML = "Saved!";
+            setTimeout(() => (save.innerHTML = ""), 2000);
+        }, 3000),
+        onSubDocClick: async (id) => {
+            history.pushState(null, null, `/documents/${id}`);
+            this.route();
+        },
     });
 
     const initialState = {
@@ -85,6 +102,7 @@ function App({ $target }) {
             id: null,
             title: "",
             content: "",
+            subDoc: null,
         },
     };
 
@@ -112,23 +130,24 @@ function App({ $target }) {
             });
             return;
         }
-        const { title, content } = await request(`/${id}`);
+        const { title, content, documents } = await request(`/${id}`);
         this.setState({
             ...this.state,
             curDoc: {
                 id,
                 title,
                 content,
+                subDoc: documents.length ? documents[0] : null,
             },
         });
     };
 
     this.route = async () => {
         const { pathname } = location;
+        await fetchPageList();
         switch (true) {
             case /^\/$/.test(pathname):
-                fetchPageList();
-                fetchTitleContent();
+                await fetchTitleContent();
                 break;
             case /^\/documents[\/\d{1,}]+$/.test(pathname):
                 const id = pathname.match(/\d{1,}/)[0];

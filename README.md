@@ -52,9 +52,9 @@ VanillaJS를 활용한 Notion 클로닝 프로젝트 입니다.
 
 > 모든 API에는 headers에 아래의 값을 넣어야 합니다. header에 해당 값이 누락이 되면 API 호출에 실패합니다.
 
-`'x-username': '다른 사람과 겹치지 않는 고유한 이름'`
+`'x-username': 'DonOhhhh'`
 
-2. Root Documents 가져오기
+1. Root Documents 가져오기
 
 -   API URL : https://cnu1.notion.edu-api.programmers.co.kr/documents
 -   method : GET
