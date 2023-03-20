@@ -51,6 +51,7 @@ function addDocument(
 
 function PageList({
     $target,
+    onHomeClick,
     onNewPageClick,
     onTitleClick,
     onItemPlusClick,
@@ -66,7 +67,8 @@ function PageList({
             const $pageList = document.createElement("div");
             $pageList.className = "pageList";
             const $header = document.createElement("header");
-            $header.innerHTML = "Notion";
+            $header.innerHTML = "Home";
+            $header.addEventListener("click", onHomeClick);
             const $article = document.createElement("article");
             addDocument(
                 $article,

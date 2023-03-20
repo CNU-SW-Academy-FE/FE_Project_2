@@ -1,10 +1,15 @@
 import { request } from "./API.js";
+import { debounce } from "./Debounce.js";
 import Editor from "./Editor.js";
 import PageList from "./PageList.js";
 
 function App({ $target }) {
     const $pageList = new PageList({
         $target,
+        onHomeClick: async () => {
+            history.pushState(null, null, "/");
+            this.route();
+        },
         onNewPageClick: async (e) => {
             const title = window.prompt("새로 생성할 문서의 제목을 입력하세요");
             if (!title) {
@@ -47,7 +52,9 @@ function App({ $target }) {
             });
             if (!newDocument) return;
             newDocument.documents = [];
-            fetchPageList();
+            await fetchPageList();
+            history.pushState(null, null, `/documents/${newDocument.id}`);
+            this.route();
         },
         onItemDeleteClick: async (documents) => {
             const answer = confirm(
@@ -69,7 +76,7 @@ function App({ $target }) {
 
     const $editor = new Editor({
         $target,
-        onChange: async () => {},
+        onChange: debounce(async (e) => {}, 3000),
     });
 
     const initialState = {

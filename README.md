@@ -155,6 +155,28 @@ VanillaJS를 활용한 Notion 클로닝 프로젝트 입니다.
 }
 ```
 
+> 수정에 성공한 경우 response에 다음 결과를 반환합니다.
+
+```js
+{
+  "id": 148,
+  "title": "제목 수정",
+  "content": "내용 수정",
+  "parent": {
+    "id": "부모노드 ID",
+    "title": "부모노드 title",
+    "content": "부모노드 content",
+    "parent": "조부모노드 id", // integer
+    "username": "username",
+    "created_at": "부모 생성일자",
+    "updated_at": "부모 수정일자"
+  }, // 만약 root 노드라면 {}
+  "username": "username",
+  "created_at": "생성일자",
+  "updated_at": "수정일자"
+}
+```
+
 6. 특정 Document 삭제하기
 
 -   API URL : https://cnu1.notion.edu-api.programmers.co.kr/documents/{documentId}

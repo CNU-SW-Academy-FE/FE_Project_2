@@ -1,28 +1,31 @@
-import { request } from "./API.js";
-
 function Editor({ $target, onChange }) {
     this.state = {};
     this.setState = (nextState) => {
         this.state = nextState;
         this.render();
     };
-    this.render = (initial = false) => {
+    this.render = (init = false) => {
         const { id, title, content } = this.state;
-        if (initial) {
+        if (init) {
             const $editor = document.createElement("div");
             $editor.className = "editor";
-            const $title = document.createElement("header");
-            $title.innerHTML = title;
-            const $content = document.createElement("article");
-            $content.innerHTML = content;
-            $editor.appendChild($title);
-            $editor.appendChild($content);
+            $editor.innerHTML = "<header></header><article></article>";
             $target.appendChild($editor);
         } else {
-            const $editor = document.querySelector(".editor");
-            const $title = $editor.querySelector("header");
+            const $title = document.querySelector(".editor header");
+            const $content = document.querySelector(".editor article");
+            if (title) {
+                $title.setAttribute("contentEditable", true);
+                $title.style.border = "5px solid #55595e";
+                $content.setAttribute("contentEditable", true);
+                $content.style.border = "5px solid #55595e";
+            } else {
+                $title.setAttribute("contentEditable", false);
+                $title.style.border = "none";
+                $content.setAttribute("contentEditable", false);
+                $content.style.border = "none";
+            }
             $title.innerHTML = title;
-            const $content = $editor.querySelector("article");
             $content.innerHTML = content;
         }
     };
