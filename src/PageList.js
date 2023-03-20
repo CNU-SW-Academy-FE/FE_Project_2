@@ -26,11 +26,13 @@ function addDocument(
             getIconNode("../icons/plus.svg", "plus", () => onCreate(id))
         );
         $tmp.appendChild(
-            getIconNode("../icons/trash.svg", "trash", () => onDelete(id))
+            getIconNode("../icons/trash.svg", "trash", () =>
+                onDelete({ id, title, documents })
+            )
         );
         $li.appendChild($tmp);
         $ul.appendChild($li);
-        if (documents.length) {
+        if (documents?.length) {
             const $nestedList = document.createElement("li");
             $nestedList.style.listStyleType = "none";
             addDocument(

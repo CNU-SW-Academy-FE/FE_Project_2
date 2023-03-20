@@ -7,15 +7,13 @@ function Editor({ $target, onChange }) {
         this.render();
     };
     this.render = (initial = false) => {
-        const { title, content } = this.state;
+        const { id, title, content } = this.state;
         if (initial) {
             const $editor = document.createElement("div");
             $editor.className = "editor";
             const $title = document.createElement("header");
-            $title.setAttribute("contentEditable", true);
             $title.innerHTML = title;
             const $content = document.createElement("article");
-            $content.setAttribute("contentEditable", true);
             $content.innerHTML = content;
             $editor.appendChild($title);
             $editor.appendChild($content);
