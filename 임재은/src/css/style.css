@@ -1,0 +1,30 @@
+li {
+    width: 100%;
+}
+
+li > span:hover {
+    background-color: #999;
+    cursor: pointer;
+}
+
+.addDocument {
+    margin-left: 6px;
+    background: none;
+    border: none;
+}
+
+.addDocument:hover {
+    cursor: pointer;
+    background-color: #999;
+}
+
+.deleteButton {
+    margin-left: 6px;
+    background: none;
+    border: none;
+}
+
+.deleteButton:hover {
+    cursor: pointer;
+    background-color: #999;
+}
