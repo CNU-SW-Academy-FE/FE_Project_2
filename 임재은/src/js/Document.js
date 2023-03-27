@@ -1,8 +1,11 @@
-import { fetchData } from "../api/api.js";
+import { request } from "../api/request.js";
 
 export default function DocumentList({
     $target,
-    initialState
+    initialState,
+    onChange,
+    onClick,
+    onDelete
 }) {
     const $page = document.createElement('div');
     $page.style.display = 'inline-block';
@@ -17,26 +20,34 @@ export default function DocumentList({
     $addRootButton.style.position = 'relative';
     $addRootButton.style.top = '0px';
     $page.appendChild($addRootButton);
+    $addRootButton.addEventListener('click', () => {
+        createDocument(null);
+        onChange();
+    });
 
     this.state = initialState;
-    this.setState = (newState) => {
-        this.state = newState;
-    }
 
-    const fetchDocument = async () => {
-        const data = await fetchData('/documents', {
-            method: 'GET',
-        });
-
-        console.log(data);
-        this.setState(data);
+    this.setState = (nextState) => {
+        this.state = nextState;
         this.render();
     }
 
     const deleteDocument = async ( documentId ) => {
-        await fetchData(`/documents/${documentId}`, {
+        await request(`/documents/${documentId}`, {
             method: 'DELETE'
         });
+        onDelete(documentId);
+    }
+
+    const createDocument = async (documentId) => {
+        await request("/documents", {
+            method: "POST",
+            body: JSON.stringify({
+                title: "untitled",
+                parent: documentId
+            })
+        })
+        onChange();
     }
 
     this.render = () => {
@@ -44,7 +55,7 @@ export default function DocumentList({
             const $ul = document.createElement('ul');
             $ul.innerHTML = `
                 ${docs.map(({ id, title, documents }) => `
-                    <li data-documentid="${id}"><span>${title}</span><button class="addDocument">+</button><button class="deleteButton">-</button></li>
+                    <li data-documentid="${id}"><span>${title}</span><button class="createButton">+</button><button class="deleteButton">-</button></li>
                     ${documents.length > 0 ? recursiveDocument(documents) : ""}`
                 ).join('')}
             `;
@@ -53,23 +64,24 @@ export default function DocumentList({
         
         $ul.innerHTML = `
             ${this.state.map(({ id, title, documents }) => `
-                <li data-documentid="${id}"><span>${title}</span><button class="addDocument">+</button><button class="deleteButton">-</button></li>
+                <li data-documentid="${id}"><span>${title}</span><button class="createButton">+</button><button class="deleteButton">-</button></li>
                 ${documents.length > 0 ? recursiveDocument(documents) : ""}`
             ).join('')}
         `;
 
+        document.querySelectorAll('li').forEach(($li) => {
+            $li.addEventListener('click', () => onClick($li.dataset.documentid));
+        });
+
+        document.querySelectorAll('.createButton').forEach((button) => button.addEventListener('click', async (e) => {
+            const $li = e.target.closest('li');
+            await createDocument($li.dataset.documentid);
+        }));
 
         document.querySelectorAll('.deleteButton').forEach((button) => button.addEventListener('click', async (e) => {
             const $li = e.target.closest('li');
             await deleteDocument($li.dataset.documentid);
-            this.render();
-        }))
+        }));
     }
 
-
-    const setState = (newState) => {
-        state = { ...state, newState };
-    }
-
-    fetchDocument();
 }

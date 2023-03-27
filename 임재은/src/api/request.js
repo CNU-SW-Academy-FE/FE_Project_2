@@ -1,7 +1,7 @@
 const API_ENDPOINT = 'https://cnu1.notion.edu-api.programmers.co.kr';
 const X_USERNAME = 'JEL666';
 
-export async function fetchData(path, options = {}) {
+export async function request(path, options = {}) {
     options = {
         ...options,
         headers: {

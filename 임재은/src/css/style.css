@@ -7,13 +7,13 @@ li > span:hover {
     cursor: pointer;
 }
 
-.addDocument {
+.createButton {
     margin-left: 6px;
     background: none;
     border: none;
 }
 
-.addDocument:hover {
+.createButton:hover {
     cursor: pointer;
     background-color: #999;
 }
