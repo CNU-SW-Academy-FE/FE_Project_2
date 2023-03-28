@@ -7,20 +7,20 @@ export default function DocumentList({
     onClick,
     onDelete
 }) {
-    const $page = document.createElement('div');
-    $page.style.display = 'inline-block';
-    $page.style.border = '1px solid black';
-    $page.style.padding = '0px 12px';
-    const $ul = document.createElement('ul');
+    const $page = document.createElement("div");
+    $page.style.display = "inline-block";
+    $page.style.border = "1px solid black";
+    $page.style.padding = "0px 12px";
+    const $ul = document.createElement("ul");
     $page.appendChild($ul);
     $target.appendChild($page);
 
-    const $addRootButton = document.createElement('button');
-    $addRootButton.textContent = '루트 문서 추가';
-    $addRootButton.style.position = 'relative';
-    $addRootButton.style.top = '0px';
+    const $addRootButton = document.createElement("button");
+    $addRootButton.textContent = "루트 문서 추가";
+    $addRootButton.style.position = "relative";
+    $addRootButton.style.top = "0px";
     $page.appendChild($addRootButton);
-    $addRootButton.addEventListener('click', () => {
+    $addRootButton.addEventListener("click", () => {
         createDocument(null);
         onChange();
     });
@@ -34,7 +34,7 @@ export default function DocumentList({
 
     const deleteDocument = async ( documentId ) => {
         await request(`/documents/${documentId}`, {
-            method: 'DELETE'
+            method: "DELETE"
         });
         onDelete(documentId);
     }
@@ -52,12 +52,12 @@ export default function DocumentList({
 
     this.render = () => {
         const recursiveDocument = (docs) => {
-            const $ul = document.createElement('ul');
+            const $ul = document.createElement("ul");
             $ul.innerHTML = `
                 ${docs.map(({ id, title, documents }) => `
                     <li data-documentid="${id}"><span>${title}</span><button class="createButton">+</button><button class="deleteButton">-</button></li>
                     ${documents.length > 0 ? recursiveDocument(documents) : ""}`
-                ).join('')}
+                ).join("")}
             `;
             return $ul.outerHTML;
         };
@@ -66,22 +66,22 @@ export default function DocumentList({
             ${this.state.map(({ id, title, documents }) => `
                 <li data-documentid="${id}"><span>${title}</span><button class="createButton">+</button><button class="deleteButton">-</button></li>
                 ${documents.length > 0 ? recursiveDocument(documents) : ""}`
-            ).join('')}
+            ).join("")}
         `;
 
-        document.querySelectorAll('li').forEach(($li) => {
-            $li.addEventListener('click', () => onClick($li.dataset.documentid));
+        document.querySelectorAll("li").forEach(($li) => {
+            $li.addEventListener("click", (e) => {
+                const { className } = e.target;
+                const id = e.target.closest('li').dataset.documentid;
+                if (className == "createButton") {
+                    createDocument(id);
+                } else if (className == "deleteButton") {
+                    deleteDocument(id);
+                } else {
+                    onClick($li.dataset.documentid);
+                }
+            });
         });
-
-        document.querySelectorAll('.createButton').forEach((button) => button.addEventListener('click', async (e) => {
-            const $li = e.target.closest('li');
-            await createDocument($li.dataset.documentid);
-        }));
-
-        document.querySelectorAll('.deleteButton').forEach((button) => button.addEventListener('click', async (e) => {
-            const $li = e.target.closest('li');
-            await deleteDocument($li.dataset.documentid);
-        }));
     }
 
 }
