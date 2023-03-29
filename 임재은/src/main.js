@@ -1,4 +1,4 @@
-import App from "./App.js";
+import App from "./js/App.js";
 
 const $target = document.querySelector('.App');
 
