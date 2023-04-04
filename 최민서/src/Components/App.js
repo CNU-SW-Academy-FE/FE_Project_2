@@ -1,14 +1,50 @@
-import PostPage from "./SideBar/PostPage";
+import DocumentPage from "./DocumentPage.js"
+import DocumentEditPage from "./DocumentEditPage.js";
+import MainPage from "./MainPage.js";
+import { initRoute } from "../utils/router.js";
+import { removeDiv } from "../utils/removeDiv.js";
 
-export default function App({ $target, initialState }) {
-    const $listContainer = document.createElement('div')
-    $listContainer.className = 'listContainer';
+export default function App({ $target }) {
+  const documentPage = new DocumentPage({ $target });
 
-    const $rendingContainer = document.createElement('div')
-    $rendingContainer.className = 'rendingContainer';
+  const documentEditPage = new DocumentEditPage({
+    $target,
+    initialState : {
+      documentId : 'new',
+      document : {
+        title :'',
+        content : ''
+      }
+    }
+  })
 
-    $target.appendChild($listContainer)
-    $target.appendChild($rendingContainer)
+  const mainPage = new MainPage({
+    $target,
+    initialState: "최민서",
+  })
 
-    new PostPage({ $target: $listContainer })
+  this.render = () => {
+    mainPage.render()
+    documentPage.render()
+  }
+
+  this.render()
+
+  this.route = ( parent ) => {
+    const {pathname} = window.location
+
+    if (pathname === '/') {
+      removeDiv('.edit-page')
+      mainPage.render()
+    } else {
+      removeDiv('.main-page')
+      const [, id] = pathname.split('/')
+      documentEditPage.setState({
+        documentId: id,
+        parentId: parent
+      }); 
+    }
+  }
+
+  initRoute((parent) => this.route(parent))
 }
