@@ -17,7 +17,7 @@ export const fetchDocument = async (documentId) => {
     return document;
 };
 
-export const updateDocument = async (id, title, content, fn) => {
+export const updateDocument = async (id, title, content) => {
     if (id) {
         const jsonData = JSON.stringify({ title, content });
     
@@ -25,8 +25,6 @@ export const updateDocument = async (id, title, content, fn) => {
             method: "PUT",
             body: jsonData
         });
-
-        fn && fn();
     }
 }
 

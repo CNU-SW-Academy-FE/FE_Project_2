@@ -21,28 +21,29 @@ export default function App({
     const $sideBar = new SideBar({
       $target: $page,
       initialState: this.state.documents,
-      onChange: () => {
+      onChangeStructure: () => {
         loadDocuments();
       },
 
-      onSelect: async (documentId) => {
-        const { id, title, content } = getLocalData();
-
-        await updateDocument(id, title, content, () => {
-          localStorage.clear();
-          loadDocuments();
-        })
-
+      onSelectDocument: async (documentId) => {
+        loadDocuments();
+        
         history.pushState(null, null, location.origin + `/documents/${documentId}`);
         this.setState({ currentDocumentId: documentId });
       },
 
-      onDelete: (documentId) => {
+      onDeleteDocument: (documentId) => {
         if (documentId === this.state.currentDocumentId) {
           this.setState({ currentDocumentId: null });
           history.pushState(null, null, location.origin);
         }
         loadDocuments();
+        localStorage.clear();
+      },
+
+      onBeforeEvent: async () => {  // 선택 추가 삭제가 일어나기 전에 먼저 문서의 내용을 업데이트하는 함수
+        const { id, title, content } = getLocalData();
+        await updateDocument(id, title, content)
         localStorage.clear();
       }
     });
@@ -55,9 +56,8 @@ export default function App({
         clearTimeout(timer);
         timer = setTimeout(async () => {
           const { id, title, content } = getLocalData();
-          await updateDocument( id, title, content, () => {
-            loadDocuments();
-          })
+          await updateDocument(id, title, content);
+          loadDocuments();
       }, 1000);
       }
     });

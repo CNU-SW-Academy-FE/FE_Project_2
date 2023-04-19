@@ -4,9 +4,10 @@ import { deleteDocument, createDocument } from "../util/DocumentRequest.js";
 export default function SideBar({
     $target,
     initialState,
-    onChange,
-    onSelect,
-    onDelete
+    onChangeStructure,
+    onSelectDocument,
+    onDeleteDocument,
+    onBeforeEvent
 }) {
     const $container = document.createElement("div");
     $container.className = "sideBar";
@@ -45,12 +46,12 @@ export default function SideBar({
 
     const handleDelete = async (documentId) => {
         await deleteDocument(documentId);
-        onDelete(documentId);
+        onDeleteDocument(documentId);
     }
 
     const handleCreate = async (documentId) => {
         await createDocument(documentId);
-        onChange();
+        onChangeStructure();
     }
 
     this.render = () => {
@@ -61,26 +62,29 @@ export default function SideBar({
                 const { className } = e.target;
                 const id = e.target.closest("li").dataset.documentid;
 
+                onBeforeEvent();
                 switch (className) {
-                    case "createButton":
+                    case "createButton":    // + 버튼
                         handleCreate(id);
                         break;
 
-                    case "deleteButton":
+                    case "deleteButton":    // - 버튼
                         handleDelete(id);
                         break;
 
-                    default:
-                        onSelect($li.dataset.documentid);
+                    default:                // 문서 클릭
+                        onSelectDocument($li.dataset.documentid);
                 }
             });
         });
     }
 
     $addRootButton.addEventListener("click", () => {
+        onBeforeEvent();
         handleCreate(null);
     });
 
+    // 마우스 오버 시 사이드바 열리도록
     let pinFlag = false;    
     $container.addEventListener("mouseover", () => {
         $container.style.transform = "translateX(0)";
@@ -91,6 +95,7 @@ export default function SideBar({
         }
     })
 
+    // 사이드바 고정 및 해제
     $pin.addEventListener("click", () => {
         if (pinFlag) {
             $container.style.transform = "translateX(-90%)";
