@@ -10,6 +10,24 @@ export const initRouter = (onRoute) => {
       history.pushState(null, null, nextUrl)
       onRoute()
     }
+
+    const { type } = e.detail
+    const { id } = e.detail
+    if (type === 'list') {
+        history.pushState(null, null, `/${id}`)
+        onRoute(null)
+    } else if (type === 'remove-btn') {
+        request(`/${id}`, {
+            method: 'DELETE'
+        })
+        onRoute(null)
+    } else if (type === 'add-btn') {
+        history.pushState(null, null, `/new`)
+        onRoute(id)
+    } else if (type === 'header') {
+        history.pushState(null, null, `/`)
+        onRoute(null)
+    }
   })
 }
 

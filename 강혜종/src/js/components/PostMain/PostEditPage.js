@@ -1,17 +1,18 @@
 // PageEdit 페이지의 역할은 무엇일까?
 // 상황에 맞는 Editor를 출력하고, 데이터를 불러와서 보여주는 역할을 수행?
 import { request } from "../../utils/api.js"
-import { getItem, removeItem, setItem } from "../../utils/Storage.js"
-import LinkButton from "../..utils/LinkButton.js"
 import { $creEle } from "../../utils/document.js"
 import Editor from "./editor.js"
 
 export default function PostEditPage({ $target, initialState }) {
     const $postEditPage = $creEle('div')
+    $postEditPage.className += ' editorDiv'
+
+    $target.appendChild($postEditPage)
 
     const editor = new Editor({
         $target: $postEditPage,
-        initialState: []
+        initialState: {}
     })
 
     this.state = initialState
@@ -21,10 +22,16 @@ export default function PostEditPage({ $target, initialState }) {
         this.render()
     }
     
+    const fetchPost = (posts) => {
+        
+    }
+
     this.render = async () => {
-        const posts = await request('/documents', { method: 'GET' })
-        console.log(posts)
-        editor.setState(posts)
+        const posts = await request(`/documents/${this.state.currentPost}`, { method: 'GET' })
+        editor.setState({
+            title: posts.title,
+            content: posts.content
+        })
     }
 
     this.render()

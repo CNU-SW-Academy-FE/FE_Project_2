@@ -1,11 +1,12 @@
-import { push } from "./router.js"
+// import { push } from "./router.js"
+import { $creEle } from "./document.js"
 
 export default function LinkButton({
     $target,
     initialState
 }) {
     this.state = initialState
-    const $linkButton = document.createElement('button')
+    const $linkButton = $creEle('button')
     
     $target.appendChild($linkButton)
 
@@ -16,6 +17,6 @@ export default function LinkButton({
     this.render()
 
     $linkButton.addEventListener('click', () => {
-        push(this.state.link)
+        // push(this.state.link)
     })
 }
